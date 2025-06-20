@@ -21,7 +21,6 @@ def lambda_handler(event, context):
                 Document={'S3Object': {'Bucket': bucket, 'Name': key}}
             )
 
-            # Safely extract lines
             extracted_lines = []
             for block in response['Blocks']:
                 if block['BlockType'] == 'LINE' and 'Text' in block:
@@ -30,7 +29,6 @@ def lambda_handler(event, context):
             extracted_text = "\n".join(extracted_lines)
             print("Extracted text:", extracted_text)
 
-            # Store in DynamoDB
             table.put_item(
                 Item={
                     'DocumentName': key,
